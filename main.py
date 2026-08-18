@@ -182,7 +182,7 @@ while Runn:
             liveammo.append(newbul)
 
 
-
+    # this is a summary comment
     screen.fill("black")
     p1.render()        
     p2.render()
