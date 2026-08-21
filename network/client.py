@@ -15,11 +15,40 @@ class Client:
         data = msg.encode("ascii")
         self.sock.sendto(data, (self.host, self.port))
 
+    def handleWELCOME(self, addr, text):
+        print("I have been accustomed")
+
+    def handleCHAT(self, addr, text):
+        print(text)
+
+    def run(self):
+        while True:
+            try:
+                data, address = self.sock.recvfrom(1024)
+                if data:
+                    text = data.decode("ascii")
+                    
+                    if text.startswith("WELCUM"):
+                        self.handleWELCOME(address, text)
+
+                    if text.startswith("CHAT"):
+                        self.handleCHAT(address, text)
+
+
+                    
+                
+            except BlockingIOError:
+                usertext = input("> ")
+                self.send("CHAT " + usertext)
+
+                
+
+
 
 
 c = Client("127.0.0.1", 5395)
 print("Send messages to server")
 
-while True:
-    message = input("> ")
-    c.send(message)
+name=str(input("what is your name?\n"))
+c.send("JOIN " + name)
+c.run()
